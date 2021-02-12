@@ -1,0 +1,13 @@
+ChurnProb <-function(data, customerid){
+  temp <-data
+  if(!any(data$CustomerId == customerid)){
+    stop("CustomerId not present in Data")
+  }
+
+  temp$Gender <- as.factor(temp$Gender)
+  temp$Exited <- as.factor(temp$Exited)
+
+  model <- glm(Exited ~ CreditScore + Gender + Age +Tenure +Balance +NumOfProducts + HasCrCard +IsActiveMember + EstimatedSalary, data = temp, family = "binomial")
+  temp[, ChurnProb := predict(model,temp, type="response")]
+  return(temp[CustomerId == customerid, list(ChurnProb)])
+}

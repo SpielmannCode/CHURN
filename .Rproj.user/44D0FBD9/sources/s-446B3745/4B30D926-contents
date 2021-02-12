@@ -1,0 +1,16 @@
+cus <- fread("H:/OneDrive/Dokumente/Studium/FS21/R BC/Day 5/data_customer.csv")
+per <- fread("H:/OneDrive/Dokumente/Studium/FS21/R BC/Day 5/data_personal.csv")
+
+data <- merge(cus, per, by="CustomerId", all=FALSE)
+
+data$Gender <- as.factor(data$Gender)
+data$Exited <- as.factor(data$Exited)
+
+model <- glm(Exited ~ CreditScore + Gender + Age +Tenure +Balance +NumOfProducts + HasCrCard +IsActiveMember + EstimatedSalary, data = data, family = "binomial")
+temp[, ChurnProb := predict(model,data, type="response")]
+
+
+
+ChurnProb(data,155657)
+
+
